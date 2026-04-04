@@ -10,10 +10,10 @@
  					   const u32 events,
  					   const u32 missed,
  					   const struct nf_ct_event *item)
-@@ -168,8 +169,9 @@
- 	if (local64_read(&e->timestamp))
- 		local64_set(&e->timestamp, ktime_get_real_ns());
- #endif
+@@ -160,8 +161,9 @@
+ 	} while (cmpxchg(&e->missed, old, want) != old);
+ 
+ 	return ret;
  }
 +#endif
  
@@ -22,7 +22,7 @@
  {
 --- a/net/netfilter/nf_conntrack_netlink.c
 +++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3095,8 +3095,9 @@
+@@ -3089,8 +3089,9 @@
  	nlmsg_cancel(skb, nlh);
  	return -1;
  }
@@ -32,7 +32,7 @@
  static int
  ctnetlink_expect_event(unsigned int events, const struct nf_exp_event *item)
  {
-@@ -3145,8 +3146,9 @@
+@@ -3139,8 +3140,9 @@
  	nfnetlink_set_err(net, 0, 0, -ENOBUFS);
  	return 0;
  }

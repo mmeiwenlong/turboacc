@@ -11,29 +11,10 @@
 + 在openwrt源代码所在目录执行：
 
     ```bash
-    curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh [版本]
+    curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
     ```
 
-    `[版本]` 为可选参数，用于指定 OpenWrt 版本，支持以下值：
-
-    | 值 | 说明 |
-    |---|---|
-    | `snapshot` | snapshot 版本（默认值） |
-    | `24.10` | 24.10 稳定版 |
-    | `25.12` | 25.12 稳定版 |
-
-    示例：
-
-    ```bash
-    # 使用默认的 snapshot 版本
-    bash add_turboacc.sh
-
-    # 指定 24.10 版本
-    bash add_turboacc.sh 24.10
-
-    # 指定 25.12 版本
-    bash add_turboacc.sh 25.12
-    ```
+    脚本会自动读取当前源码树的内核版本，并匹配对应的补丁。
 
 + 之后执行
 

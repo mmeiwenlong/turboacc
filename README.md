@@ -4,6 +4,8 @@
 包括以下功能：快速转发引擎、全锥形 NAT1、TCP 拥塞控制算法
 支持内核版本：6.6、6.12、6.18
 
+> **如果只需要全锥形 NAT 功能而不需要 turboacc 的其他加速引擎**，可以使用独立项目 **[openwrt-sonic-fullcone](https://github.com/mufeng05/openwrt-sonic-fullcone)**。该项目基于 SONiC 的 fullcone NAT 内核补丁，支持 fw3/fw4 双防火墙、per-zone 和 per-protocol 粒度控制、LuCI Web 界面配置，且无需额外内核模块。
+
 目前仅测试了2025-11-20的x86平台的snapshot版本OpenWrt，fw3(iptables)和fw4(nftables)均可用
 
 ## 使用方法

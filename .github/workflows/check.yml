@@ -24,7 +24,7 @@ jobs:
         - name: 克隆
           run: |
             git clone --depth=1 --single-branch https://github.com/coolsnowwolf/lede $CLONE_PATH/lede
-            git clone --depth=1 --single-branch -b "openwrt-23.05" https://github.com/coolsnowwolf/luci $CLONE_PATH/luci
+            git clone --depth=1 --single-branch -b "openwrt-25.12" https://github.com/coolsnowwolf/luci $CLONE_PATH/luci
             git clone --depth=1 https://github.com/mufeng05/turboacc $CLONE_PATH/turboacc
 
         - name: 整理

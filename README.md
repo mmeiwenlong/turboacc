@@ -40,7 +40,7 @@ make menuconfig
 
 ## 关于
 
-此仓库的luci-app-turboacc是基于lede的[luci-app-turboacc](https://github.com/coolsnowwolf/luci/tree/openwrt-23.05/applications/luci-app-turboacc)和chenmozhijin的[turboacc](https://github.com/chenmozhijin/turboacc)修改而来的，保留了lede版luci-app-turboacc的所有功能。
+此仓库的luci-app-turboacc是基于lede的[luci-app-turboacc](https://github.com/coolsnowwolf/luci/tree/openwrt-25.12/applications/luci-app-turboacc)和chenmozhijin的[turboacc](https://github.com/chenmozhijin/turboacc)修改而来的，保留了lede版luci-app-turboacc的所有功能。
 
 ## 感谢
 

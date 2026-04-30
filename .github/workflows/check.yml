@@ -1,5 +1,6 @@
 name: Check TurboACC Updates
 on:
+  push:
   schedule:
     - cron: '0 23 * * *'
   repository_dispatch:

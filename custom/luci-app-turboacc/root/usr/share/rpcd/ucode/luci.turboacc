@@ -4,9 +4,30 @@ import * as fs from 'fs';
 
 let ubus = require('ubus').connect();
 
+let mtk_wed_modules = [ "mt7915e", "mt7996e" ];
+
 function readfile(path) {
     s = fs.readfile(path);
     return trim(s);
+}
+
+function has_mtkwed_module(kernel) {
+    for (let mod in mtk_wed_modules) {
+        if (fs.access("/lib/modules/" + kernel + "/" + mod + ".ko")) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function get_mtkwed_param() {
+    for (let mod in mtk_wed_modules) {
+        path = "/sys/module/" + mod + "/parameters/wed_enable";
+        if (fs.access(path)) {
+            return readfile(path);
+        }
+    }
+    return null;
 }
 
 return {
@@ -21,7 +42,9 @@ return {
                                         hasFLOWOFFLOADING : fs.access("/lib/modules/" + boardinfo.kernel + "/xt_FLOWOFFLOAD.ko") || fs.access("/lib/modules/" + boardinfo.kernel + "/nft_flow_offload.ko"),
                                         hasFASTCLASSIFIER : fs.access("/lib/modules/" + boardinfo.kernel + "/fast-classifier.ko"),
                                         hasSHORTCUTFECM   : fs.access("/lib/modules/" + boardinfo.kernel + "/shortcut-fe-cm.ko"),
+                                        hasNSSECM         : fs.access("/etc/init.d/qca-nss-ecm"),
                                         hasMEDIATEKHNAT   : fs.access("/lib/modules/" + boardinfo.kernel + "/mtkhnat.ko"),
+                                        hasMTKWEDWO       : (system("grep -Eq 'mediatek' /etc/openwrt_release") == 0) && has_mtkwed_module(boardinfo.kernel),
                                         hasXTFULLCONENAT  : fs.access("/lib/modules/" + boardinfo.kernel + "/xt_FULLCONENAT.ko"),
                                         hasNFTFULLCONENAT  : fs.access("/lib/modules/" + boardinfo.kernel + "/nft_fullcone.ko"),
                                         hasTCPCCA         : readfile("/proc/sys/net/ipv4/tcp_available_congestion_control")
@@ -53,13 +76,21 @@ return {
                                 else if (fs.stat("/sys/kernel/debug/hnat")?.type == "directory") {
                                         ethernet_hnat = (readfile("/sys/kernel/debug/hnat/hook_toggle") != "enabled") &&
                                                 " / Ethernet HNAT Disabled" || "";
-                                        wireless_hnat = (system("grep -q 'WHNAT=1' '/etc/wireless/mediatek/'*_card*.dat") != 0) &&
-                                                " / Wireless HNAT Disabled" || "";
+                                        wireless_hnat = "";
+                                        wed_enabled = get_mtkwed_param();
+                                        if (wed_enabled != null) {
+                                                wireless_hnat = (wed_enabled == "Y" || wed_enabled == "1") ? "" :
+                                                        " / Wireless HNAT Disabled";
+                                        }
+                                        else {
+                                                wireless_hnat = (system("grep -q 'WHNAT=1' '/etc/wireless/mediatek/'*_card*.dat") != 0) &&
+                                                        " / Wireless HNAT Disabled" || "";
+                                        }
                                         if (ethernet_hnat == "" || wireless_hnat == "") {
                                                 fptype = "MediaTek HNAT" + ethernet_hnat + wireless_hnat;
                                         }
                                 }
-                                
+
                                 return {
                                         type: fptype
                                 };
@@ -80,7 +111,7 @@ return {
                                 else if (system("iptables -t nat -L zone_wan_postrouting | grep -q fullcone") == 0) {
                                         fctype = "Boardcom Fullcone";
                                 }
-                                
+
                                 return {
                                         type: fctype
                                 };
@@ -91,7 +122,7 @@ return {
                         call: function() {
                                 ccatype = null;
                                 ccatype = uc(readfile("/proc/sys/net/ipv4/tcp_congestion_control"));
-                                
+
                                 return {
                                         type: ccatype
                                 };

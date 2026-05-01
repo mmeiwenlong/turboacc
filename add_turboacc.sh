@@ -161,5 +161,10 @@ cp -f "$TMPDIR/turboacc/custom/fullconenat-nft/Makefile" "./package/turboacc/ful
 cp -f "$TMPDIR/turboacc/custom/patches/iptables/patches/900-bcm-fullconenat.patch" "./package/network/utils/iptables/patches/"
 cp -f "$TMPDIR/turboacc/custom/shortcut-fe/fast-classifier/patches/001-fix-build.patch" "./package/turboacc/shortcut-fe/fast-classifier/patches/"
 
+echo ""
 echo "Finish"
+echo ""
+echo "Tip: 如果只需要全锥形 NAT (Full Cone NAT) 而不需要 turboacc 的其他功能，"
+echo "     可以使用独立项目 openwrt-sonic-fullcone："
+echo "     https://github.com/mufeng05/openwrt-sonic-fullcone"
 exit 0
